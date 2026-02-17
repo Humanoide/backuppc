@@ -1,0 +1,25 @@
+
+
+1️⃣ Cambiar el PingCmd
+
+Actualmente tienes:
+
+PingCmd
+/usr/bin/ssh -l root $host true
+
+
+Cámbialo a:
+
+/usr/bin/ssh -i /var/lib/backuppc/.ssh/id_rsa -oHostKeyAlgorithms=+ssh-rsa -oPubkeyAcceptedAlgorithms=+ssh-rsa -l root $host true
+
+
+Esto hace que BackupPC “pinguee” el host antiguo usando la misma clave y algoritmos que funcionan.
+
+2️⃣ Cambiar el comando de Rsync
+
+BackupPC por defecto hace:
+
+/usr/bin/rsync -e ssh ...
+
+
+Debemos indicarle que use SSH con esas opciones extra. Esto se hace modificando RsyncClientCmd o creando un alias en ~/.ssh/config, pero como en tu BackupPC parece que no tienes ese campo, la forma más rápida es modificar el PingCmd y ver si las copias ya arrancan. BackupPC a veces reutiliza el mismo SSH para Rsync si se conecta como root y con la clave.
